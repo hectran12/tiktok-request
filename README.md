@@ -1,1 +1,1 @@
-# Này không phai API, mà chỉ là code thông thường. GHI NHẦM TÍ:)))
+# Công thức chung: request đến profile muốn follow = cookie sau đó get header vừa được set lấy msToken rồi nối như trong code.
