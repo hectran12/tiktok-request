@@ -1,4 +1,4 @@
-import requests, json
+import requests
 from requests.structures import CaseInsensitiveDict
 url_follow = input("Nhap url follow: ")
 id_follow  = input("Nhap id follow: ")
