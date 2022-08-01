@@ -1,3 +1,4 @@
+# thang lon = thằng lợn , xin đừng nghĩ bậy:)))))
 import requests, json, os, sys, json, time
 from requests.structures import CaseInsensitiveDict
 
