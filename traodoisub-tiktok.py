@@ -1,4 +1,3 @@
-
 import requests, json, os, sys, json, time
 from requests.structures import CaseInsensitiveDict
 
@@ -147,25 +146,35 @@ else:
         print("Region: " + region)
 
     def getNV (type):
-        global token
-        url = "https://traodoisub.com/api/?fields=" + type + "&access_token=" + token
-        rq = getRQ(url).json()
-        return rq['data']
+        try:
+            global token
+            url = "https://traodoisub.com/api/?fields=" + type + "&access_token=" + token
+            rq = getRQ(url).json()
+            return rq['data']
+        except:
+            pass
 
     def sendNV (type, id):
-        global token
-        url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
-        rq = getRQ(url)
+        try:
+            global token
+            url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
+            rq = getRQ(url)
+            return int(rq.json()["cache"])
+        except:
+            return 0
 
     def claim (type, id):
-        global token
-        url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
-        rq = requests.get(url).json()
-        if (rq["success"] == 200):
-            print('Job thanh cong: ', rq['data']['job_success'])
-            print('Nhan thanh cong ', rq["data"]["msg"], ' tong xu la: ', rq["data"]["xu"])
-        else:
-            print('Chua du nguong')
+        try:
+            global token
+            url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
+            rq = requests.get(url).json()
+            if (rq["success"] == 200):
+                print('Job thanh cong: ', rq['data']['job_success'])
+                print('Nhan thanh cong ', rq["data"]["msg"], ' tong xu la: ', rq["data"]["xu"])
+            else:
+                print('Chua du nguong')
+        except:
+            pass
 
     def getHeaderUser(url):
         global headers_default
@@ -183,7 +192,7 @@ else:
             else:
                 print('Follow that bai', id_follow)
         except:
-            print('Loi roi thang lon')
+            print('Loi o cho')
 
     def hearthVideo(url_video):
         global headers_default
@@ -199,7 +208,7 @@ else:
             else:
                 print('Hearth that bai', idVideo)
         except:
-            print('Loi roi thang lon')
+            print('Loi o cho')
     
 
     choice = menu_job()
@@ -221,17 +230,20 @@ else:
         if choice == 1:
             try:
                 listJob = getNV("tiktok_follow")
-                if (len(listJob) > 0):
+                if (listJob == [] or listJob == None):
+                    print('Het job roi ban', end="\r")
+                    time.sleep(5)
+                else:
                     for x in listJob:
                         followUser(x['id'].split('_')[0], x['link'])
-                        sendNV("TIKTOK_FOLLOW_CACHE", x["id"])
-
-                    claim('TIKTOK_FOLLOW', 'TIKTOK_FOLLOW_API')
-                else:
-                    print('Het job roi thang lon', end="\r")
-                    time.sleep(10)
-            except:
-                print('Het job roi thang lon', end="\r")
+                        cache = sendNV("TIKTOK_FOLLOW_CACHE", x["id"])
+                        time.sleep(2)
+                        if (cache >= 8):
+                            claim('TIKTOK_FOLLOW', 'TIKTOK_FOLLOW_API')
+                            time.sleep(5)
+            except Exception as e:
+                print('Loi o cho', e)
+                print('Het job roi ban', end="\r")
                 time.sleep(10)
 
         elif choice == 2:
@@ -239,14 +251,18 @@ else:
             headers_default['tt-csrf-token'] = csrf_cookie
             try:
                 listJob = getNV('tiktok_like')
-                if (len(listJob) > 0):
+                if (listJob == [] or listJob == None):
+                    print('Het job roi ban', end="\r")
+                    time.sleep(5)
+                else:
                     for x in listJob:
                         hearthVideo(x['link'])
-                        sendNV('TIKTOK_LIKE_CACHE', x["id"])
-                    claim('TIKTOK_LIKE', 'TIKTOK_LIKE_API')
-                else:
-                    print('Het job roi thang lon', end="\r")
-                    time.sleep(10)
-            except:
-                print('Het job roi thang lon', end="\r")
+                        cache = sendNV('TIKTOK_LIKE_CACHE', x["id"])
+                        time.sleep(2)
+                        if (cache >= 8):
+                            claim('TIKTOK_LIKE', 'TIKTOK_LIKE_API')
+                            time.sleep(5)
+            except Exception as e:
+                print('Loi o cho', e)
+                print('Het job roi ban', end="\r")
                 time.sleep(10)
