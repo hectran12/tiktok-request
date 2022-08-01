@@ -11,7 +11,7 @@ csrf_cookie = myCookie.split('tt_csrf_token=')[1].split(';')[0]
 
 cmt = False # TRUE = có sài comment / FALSE = không sài comment ( phải đề FALSE thì tim mới hoạt động )
 if (cmt):
-    xsecsdkcsrftoken = '<YOUR xsec-sdk-csrf-token>'
+    xsecsdkcsrftoken = '<YOUR x-secsdk-csrf-token>'
 headers_default = CaseInsensitiveDict()
 headers_default["Accept"] = "*/*"
 headers_default["Accept-Language"] = "vi,en;q=0.9,en-US;q=0.8"
