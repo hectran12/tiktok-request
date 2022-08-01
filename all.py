@@ -1,4 +1,4 @@
-import requests
+import requests, json
 from requests.structures import CaseInsensitiveDict
 
 url_follow = ""
@@ -11,7 +11,7 @@ csrf_cookie = myCookie.split('tt_csrf_token=')[1].split(';')[0]
 
 cmt = False # TRUE = có sài comment / FALSE = không sài comment ( phải đề FALSE thì tim mới hoạt động )
 if (cmt):
-    xsecsdkcsrftoken = '<YOUR x-secsdk-csrf-token>'
+    xsecsdkcsrftoken = '<YOUR xsec-sdk-csrf-token>'
 headers_default = CaseInsensitiveDict()
 headers_default["Accept"] = "*/*"
 headers_default["Accept-Language"] = "vi,en;q=0.9,en-US;q=0.8"
@@ -29,6 +29,22 @@ if (cmt == False):
     headers_default['tt-csrf-token'] = csrf_cookie # tim cần cái này
 else:
     headers_default['x-secsdk-csrf-token'] = xsecsdkcsrftoken # comment cần cái này
+
+
+def getMyInfo():
+    global headers_default
+    url_getinfo = 'https://www.tiktok.com/@enola.bedard'
+    rq = requests.get(url_getinfo, headers=headers_default).text
+    json_ = json.loads(rq.split('<script id="SIGI_STATE" type="application/json">')[1].split('</script>')[0])
+    defaultjson = json_['AppContext']['appContext']['user']
+    uid = defaultjson['uid']
+    name = defaultjson['nickName']
+    uniqueId = defaultjson['uniqueId']
+    region = defaultjson['region']
+    print("UID: " + uid)
+    print("Name: " + name)
+    print("UniqueId: " + uniqueId)
+    print("Region: " + region)
 
 def getHeaderUser(url):
     global headers_default
@@ -61,6 +77,8 @@ def comment():
     urlComment = 'https://www.tiktok.com/api/comment/publish/?aid=1988&app_language=vi-VN&app_name=tiktok_web&aweme_id=' + idVideo + '&battery_info=1&browser_language=vi&browser_name=Mozilla&browser_online=true&browser_platform=Win32&browser_version=5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F103.0.5060.134%20Safari%2F537.36%20Edg%2F103.0.1264.77&channel=tiktok_web&cookie_enabled=true&device_id=7119768594258642434&device_platform=web_pc&focus_state=true&from_page=video&history_len=3&is_fullscreen=false&is_page_visible=true&os=windows&priority_region=VN&referer=&region=VN&screen_height=1080&screen_width=1920&text=' + content_cmt + '&text_extra=%5B%5D&tz_name=Asia%2FBangkok&verifyFp=&webcast_language=vi-VN&msToken=' + msToken + '&X-Bogus=&_signature='
     json = requests.post(urlComment, headers=headers_default).json()
     print(json)
+
+getMyInfo()
 #followUser()
 #hearthVideo()
 #comment()
