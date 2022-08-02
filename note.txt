@@ -1,0 +1,1 @@
+Đổi acc , hoặc tạo acc mới ( sử dụng kèm proxy or fake ip ) rồi lấy cookie. Nếu chưa được thì hãy change useragent kèm một số info máy trong url lúc gửi lên.
