@@ -146,8 +146,8 @@ else:
         print("Region: " + region)
 
     def getNV (type):
+        global token
         try:
-            global token
             url = "https://traodoisub.com/api/?fields=" + type + "&access_token=" + token
             rq = getRQ(url).json()
             return rq['data']
@@ -155,8 +155,8 @@ else:
             pass
 
     def sendNV (type, id):
+        global token
         try:
-            global token
             url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
             rq = getRQ(url)
             return int(rq.json()["cache"])
@@ -164,8 +164,8 @@ else:
             return 0
 
     def claim (type, id):
+        global token
         try:
-            global token
             url = "https://traodoisub.com/api/coin/?type=" + type + "&id=" + id + "&access_token=" + token
             rq = requests.get(url).json()
             if (rq["success"] == 200):
