@@ -76,7 +76,7 @@ def menu_job():
     
     job = int(input("Chon job: "))
     if (job > len(listjob)):
-        print("May chon ngu")
+        print("Chon sai")
         sys.exit()
     else:
         return job
