@@ -152,7 +152,7 @@ else:
             rq = getRQ(url).json()
             return rq['data']
         except:
-            pass
+            return None
 
     def sendNV (type, id):
         global token
@@ -178,8 +178,11 @@ else:
 
     def getHeaderUser(url):
         global headers_default
-        return requests.get(url, headers=headers_default).headers
-
+        try:
+            return requests.get(url, headers=headers_default).headers
+        except:
+            return ""
+        
     def followUser(id_follow, url_follow):
         global headers_default
         try:
@@ -192,7 +195,7 @@ else:
             else:
                 print('Follow that bai', id_follow)
         except:
-            print('Loi o cho')
+            print('Loi follow roi ban oi!!!')
 
     def hearthVideo(url_video):
         global headers_default
@@ -208,7 +211,7 @@ else:
             else:
                 print('Hearth that bai', idVideo)
         except:
-            print('Loi o cho')
+            print('Loi tim roi ban oi!!!')
     
 
     choice = menu_job()
